@@ -1,0 +1,23 @@
+# -*- coding: utf-8 -*-
+# vim: ft=jinja
+
+{% import_yaml 'ceph/defaults.yaml' as default_settings %}
+
+{% set os_family_map = salt['grains.filter_by']({
+        'Debian': {
+        },
+        'RedHat': {
+            "servicetype": 'systemd',
+        },
+  }
+  , grain="os_family"
+  , merge=salt['pillar.get']('ceph:lookup'))
+%}
+{% do default_settings.ceph.update(os_family_map) %}
+
+{% set ceph = salt['pillar.get'](
+        'ceph',
+        default=default_settings.ceph,
+        merge=True
+    )
+%}

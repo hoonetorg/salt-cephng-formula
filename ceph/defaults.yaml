@@ -1,0 +1,9 @@
+# -*- coding: utf-8 -*-
+# vim: ft=yaml
+ceph:
+  version: jewel
+  serverpkg: ceph
+  config: '/etc/ceph/ceph.conf'
+  service:
+    name: ceph.target
+    type: systemd
