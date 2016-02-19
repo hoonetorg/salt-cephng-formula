@@ -4,11 +4,17 @@
 {% import_yaml 'ceph/defaults.yaml' as default_settings %}
 
 {% set os_family_map = salt['grains.filter_by']({
-        'Debian': {
-        },
-        'RedHat': {
-            "servicetype": 'systemd',
-        },
+    'Debian': {
+      "serverpkgs": [ 
+        'ceph',
+      ],
+     },
+    'RedHat': {
+      "serverpkgs": [ 
+        'ceph',
+        'python-setuptools',
+      ],
+    },
   }
   , grain="os_family"
   , merge=salt['pillar.get']('ceph:lookup'))

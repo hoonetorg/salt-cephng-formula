@@ -2,6 +2,6 @@
 # vim: ft=sls
 
 include:
-  - ceph.serverinstall
-  - ceph.config
-  - ceph.service
+  - ceph.serverpkgs
+  - ceph.cephconf
+  - ceph.serverservice

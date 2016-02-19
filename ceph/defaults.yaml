@@ -2,8 +2,9 @@
 # vim: ft=yaml
 ceph:
   version: jewel
-  serverpkg: ceph
-  config: '/etc/ceph/ceph.conf'
-  service:
+  #cephconf: '/etc/ceph/ceph.conf'
+  cluster_name: 'ceph'
+  serverservice:
     name: ceph.target
-    type: systemd
+    state: running
+    enable: True

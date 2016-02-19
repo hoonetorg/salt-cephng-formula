@@ -3,7 +3,6 @@
 
 {% from "ceph/map.jinja" import ceph with context %}
 
-ceph.target:
-  service.running:
-    - name: {{ ceph.service.name }}
-    - enable: True
+ceph_serverpkgs__pkgs:
+  pkg.installed:
+    - pkgs: {{ ceph.serverpkgs }}

@@ -1,0 +1,20 @@
+{%- if confdict.conf.without_section_pre is defined and confdict.conf.without_section_pre -%}
+{%- for nosectoptpre, nosectoptpre_data in confdict.conf.without_section_pre.items()|default({})|sort -%}
+{{nosectoptpre}}={{nosectoptpre_data}}
+{%- endfor -%}{{- '\n\n' -}}
+{%- endif -%}
+{%- for sect, sect_data in confdict.conf.items()|default({}) -%}
+{%- if sect not in [ 'without_section_pre', 'without_section_post' ] -%}
+{{sect + '\n'}}
+{%- if sect_data != None -%}
+{%- for sectopt, sectopt_data in sect_data.items()|default({})|sort -%}
+{{sectopt}}={{sectopt_data + '\n'}}
+{%- endfor -%}
+{%- endif -%}{{- '\n' -}}
+{%- endif -%}
+{%- endfor -%}
+{%- if confdict.conf.without_section_post is defined and confdict.conf.without_section_post -%}
+{%- for nosectoptpost, nosectoptpost_data in confdict.conf.without_section_post.items()|default({})|sort -%}
+{{nosectoptpost}}={{nosectoptpost_data}}
+{%- endfor -%}{{- '\n\n' -}}
+{%- endif -%}
