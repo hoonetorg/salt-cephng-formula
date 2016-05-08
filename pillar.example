@@ -1,3 +1,13 @@
 ceph:
   lookup:
-    master: ceph
+    # create keys: dd if=/dev/random bs=28 count=1 2>/dev/null|base64
+    keys:
+      client.admin:
+      client.bootstrap-mon:
+      client.bootstrap-mds:
+      client.bootstrap-osd:
+      client.bootstrap-rgw:
+      osd.0:
+      osd.1:
+      osd.2:
+
