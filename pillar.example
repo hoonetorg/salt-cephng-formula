@@ -1,6 +1,6 @@
 ceph:
   lookup:
-    # create keys: dd if=/dev/random bs=28 count=1 2>/dev/null|base64
+    # create keys: python -c "import os ; import struct ; import time; import base64 ; key = os.urandom(16) ; header = struct.pack('<hiih',1,int(time.time()),0,len(key)) ; print base64.b64encode(header + key)"
     keys:
       client.admin:
       client.bootstrap-mon:
