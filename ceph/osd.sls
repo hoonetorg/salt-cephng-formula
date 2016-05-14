@@ -7,5 +7,4 @@ include:
   - ceph.serverservice
   - ceph.cephconf
   - ceph.keyring_save
-  - ceph.keyring_auth_add
-  - ceph.mon_create
+  - ceph.osd_create

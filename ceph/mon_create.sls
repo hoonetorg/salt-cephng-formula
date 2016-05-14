@@ -2,7 +2,7 @@
 # vim: ft=sls
 {%- from "ceph/map.jinja" import ceph with context %}
 
-ceph_keyring__mon_create:
+ceph_mon_create__create:
   module.run:
     - name: ceph.mon_create
 #    - require:
@@ -11,8 +11,8 @@ ceph_keyring__mon_create:
 
 # Check system is quorum
 
-cluster_status:
+ceph_mon_create__quorum:
     ceph.quorum:
     - require:
-      - module: ceph_keyring__mon_create
+      - module: ceph_mon_create__create
 

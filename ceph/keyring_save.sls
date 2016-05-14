@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: ft=sls
 {%- from "ceph/map.jinja" import ceph with context %}
-{%- for keyring, keyring_data in ceph.get('clusters').get(ceph.cluster_name).get('keyrings_standard').items() %}
+{%- for keyring, keyring_data in ceph.get('clusters').get(ceph.cluster_name).get('keyrings').items() %}
 
 {%- if keyring_data.get('caps') %}
   {%- if keyring_data.get('filename') %}
-ceph_keyring__keyring_save_{{keyring}}:
+ceph_keyring_save__keyring_{{keyring}}:
   module.run:
     - name: cmd.run
     - cmd: "/usr/bin/ceph-authtool -n {{keyring_data.name}} --create-keyring {{keyring_data.filename}} --add-key {{keyring_data.key}}{% for cap in keyring_data.caps %} --cap {{ cap }}{%- endfor %}"
@@ -14,7 +14,7 @@ ceph_keyring__keyring_save_{{keyring}}:
 
   {%- endif %}
 {%- else %}
-ceph_keyring__keyring_save_{{keyring}}:
+ceph_keyring_save__keyring_{{keyring}}:
   module.run:
     - name: ceph.keyring_save
     - kwargs: {
