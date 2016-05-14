@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 # vim: ft=sls
 {%- from "ceph/map.jinja" import ceph with context %}
-{%- for keyring, keyring_data in ceph.get('clusters').get(ceph.cluster_name).get('keyrings_standard').items() %}
+{%- for keyring, keyring_data in ceph.get('clusters').get(ceph.cluster_name).get('keyrings').items() %}
 {%- if keyring not in [ 'admin', 'mon' ] %}
 {%- if keyring_data.get('caps') %}
-ceph_keyring__keyring_auth_add_{{keyring}}:
+ceph_keyring_auth_add__keyring_{{keyring}}:
   {%- if keyring_data.get('filename') %}
   module.run:
     - name: cmd.run
@@ -20,7 +20,7 @@ ceph_keyring__keyring_auth_add_{{keyring}}:
     - python_shell: True
   {%- endif %}
 {%- else %}
-ceph_keyring__keyring_auth_add_{{keyring}}:
+ceph_keyring_auth_add__keyring_{{keyring}}:
   module.run:
     - name: ceph.keyring_auth_add
     - kwargs: {
