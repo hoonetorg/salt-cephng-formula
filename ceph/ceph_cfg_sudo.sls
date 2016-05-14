@@ -2,7 +2,7 @@
 # vim: ft=sls
 {%- from "ceph/map.jinja" import ceph with context %}
 
-ceph_keyring__sudo:
+ceph_cfg_sudo__sudo:
   file.managed:
     - name: /etc/sudoers.d/donotrequiretty
     - contents: "Defaults    !requiretty"
