@@ -2,9 +2,5 @@
 # vim: ft=sls
 
 include:
-  - ceph.ceph_cfg_sudo
-  - ceph.serverpkgs
-  - ceph.serverservice
-  - ceph.cephconf
-  - ceph.keyring_save
+  - ceph.server
   - ceph.osd_create
