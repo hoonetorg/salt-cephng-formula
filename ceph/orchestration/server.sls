@@ -12,26 +12,52 @@
 # node_ids_servers: {{node_ids_servers|json}}
 # admin_node_id: {{admin_node_id}}
 
-ceph_orchestration__serverpkgs:
+ceph_orchestration__mon:
   salt.state:
-    - tgt: {{node_ids_servers}}
+    - tgt: {{node_ids_mon}}
     - tgt_type: list
     - expect_minions: True
-    - sls: ceph.serverpkgs
+    - sls: ceph.mon
 
-ceph_orchestration__cephconf:
+ceph_orchestration__quorum:
   salt.state:
-    - tgt: {{node_ids_servers}}
-    - tgt_type: list
+    - tgt: {{admin_node_id}}
     - expect_minions: True
-    - sls: ceph.cephconf
+    - sls: ceph.quorum
     - require:
-      - salt: ceph_orchestration__serverpkgs
+      - salt: ceph_orchestration__mon
 
-#ceph_orchestration__deploy:
-#  salt.state:
-##    - tgt: {{admin_node_id}}
-#    - expect_minions: True
-#    - sls: ceph.deploy
-#    - require:
-#      - salt: ceph_orchestration__pcs
+ceph_orchestration__osd:
+  salt.state:
+    - tgt: {{node_ids_osd}}
+    - tgt_type: list
+    - expect_minions: True
+    - sls: ceph.osd
+    - require:
+      - salt: ceph_orchestration__quorum
+
+ceph_orchestration__pools:
+  salt.state:
+    - tgt: {{admin_node_id}}
+    - expect_minions: True
+    - sls: ceph.pool_create
+    - require:
+      - salt: ceph_orchestration__osd
+
+ceph_orchestration__rgw:
+  salt.state:
+    - tgt: {{node_ids_rgw}}
+    - tgt_type: list
+    - expect_minions: True
+    - sls: ceph.rgw_create
+    - require:
+      - salt: ceph_orchestration__pools
+
+ceph_orchestration__mds:
+  salt.state:
+    - tgt: {{node_ids_mds}}
+    - tgt_type: list
+    - expect_minions: True
+    - sls: ceph.mds_create
+    - require:
+      - salt: ceph_orchestration__pools
