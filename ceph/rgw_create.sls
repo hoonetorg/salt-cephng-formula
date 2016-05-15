@@ -14,6 +14,6 @@ ceph_rgw_create__create:
     - name: ceph.rgw_create
     - kwargs:
         cluster_name: "{{ceph.cluster_name}}"
-        name: "{{ ceph.get('clusters').get(ceph.cluster_name).get('cephhostname') }}"
+        name: "rgw.{{ ceph.get('clusters').get(ceph.cluster_name).get('cephhostname') }}"
     #- require:
     #  - module: ceph_rgw_create__pools_create
