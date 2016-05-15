@@ -28,10 +28,9 @@ ceph_osd_create__prepare_{{osd}}:
         {%- if osd_data.get('journal_uuid') %}
         journal_uuid: '{{osd_data.journal_uuid}}'
         {%- endif %}
-      
-     #FIXME 
-#    - require:
-#      - module: keyring_osd_auth_add
+    #FIXME 
+    #- require:
+    #  - module: keyring_osd_auth_add
 
 ceph_osd_create__activate_{{osd}}:
   module.run:
