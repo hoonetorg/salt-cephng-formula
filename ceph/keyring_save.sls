@@ -8,7 +8,7 @@
 ceph_keyring_save__keyring_{{keyring}}:
   module.run:
     - name: cmd.run
-    - cmd: "/usr/bin/ceph-authtool -n {{keyring_data.name}} --create-keyring {{keyring_data.filename}} --add-key {{keyring_data.key}}{% for cap in keyring_data.caps %} --cap {{ cap }}{%- endfor %}"
+    - cmd: "ceph-authtool -n {{keyring_data.name}} --create-keyring {{keyring_data.filename}} --add-key {{keyring_data.key}}{% for cap in keyring_data.caps %} --cap {{ cap }}{%- endfor %}"
     - unless: "test -f {{keyring_data.filename}}"
     - python_shell: True
 
@@ -17,9 +17,9 @@ ceph_keyring_save__keyring_{{keyring}}:
 ceph_keyring_save__keyring_{{keyring}}:
   module.run:
     - name: ceph.keyring_save
-    - kwargs: {
-        'keyring_type' : '{{keyring}}',
-        'secret' : '{{keyring_data.key}}'
-        }
+    - kwargs: 
+        cluster_name: "{{ceph.cluster_name}}"
+        keyring_type: "{{keyring}}"
+        secret: "{{keyring_data.key}}"
 {%- endif %}
 {%- endfor %}

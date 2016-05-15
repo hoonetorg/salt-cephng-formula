@@ -8,14 +8,14 @@ ceph_keyring_auth_add__keyring_{{keyring}}:
   {%- if keyring_data.get('filename') %}
   module.run:
     - name: cmd.run
-    - cmd: "ceph auth import -i {{keyring_data.filename}}"
+    - cmd: "ceph --connect-timeout 5 --cluster {{ceph.cluster_name}} auth import -i {{keyring_data.filename}}"
     - unless: "ceph auth get {{keyring_data.name}}"
     - python_shell: True
   {%- else %}
   #FIXME: do not use, does not set the key
   module.run:
     - name: cmd.run
-    - cmd: "/usr/bin/ceph --connect-timeout 5 --cluster {{ceph.cluster_name}} auth get-or-create {{keyring_data.name}}{% for cap in keyring_data.caps %} {{ cap }}{%- endfor %}"
+    - cmd: "ceph --connect-timeout 5 --cluster {{ceph.cluster_name}} auth get-or-create {{keyring_data.name}}{% for cap in keyring_data.caps %} {{ cap }}{%- endfor %}"
     - unless: "ceph auth get {{keyring_data.name}}"
     - python_shell: True
   {%- endif %}
@@ -23,9 +23,9 @@ ceph_keyring_auth_add__keyring_{{keyring}}:
 ceph_keyring_auth_add__keyring_{{keyring}}:
   module.run:
     - name: ceph.keyring_auth_add
-    - kwargs: {
-        'keyring_type' : '{{keyring}}',
-        }
+    - kwargs:
+        cluster_name: "{{ceph.cluster_name}}"
+        keyring_type: "{{keyring}}"
 {%- endif %}
 {%- endif %}
 {%- endfor %}
