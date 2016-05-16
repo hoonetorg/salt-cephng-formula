@@ -27,6 +27,14 @@ ceph_orchestration__quorum:
     - require:
       - salt: ceph_orchestration__mon
 
+ceph_orchestration__keyring_auth_add:
+  salt.state:
+    - tgt: {{admin_node_id}}
+    - expect_minions: True
+    - sls: ceph.keyring_auth_add
+    - require:
+      - salt: ceph_orchestration__quorum
+
 ceph_orchestration__osd:
   salt.state:
     - tgt: {{node_ids_osd}}
@@ -34,7 +42,7 @@ ceph_orchestration__osd:
     - expect_minions: True
     - sls: ceph.osd
     - require:
-      - salt: ceph_orchestration__quorum
+      - salt: ceph_orchestration__keyring_auth_add
 
 ceph_orchestration__pools:
   salt.state:
