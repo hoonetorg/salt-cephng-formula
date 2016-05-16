@@ -26,6 +26,9 @@ ceph_keyring_auth_add__keyring_{{keyring}}:
     - kwargs:
         cluster_name: "{{ceph.cluster_name}}"
         keyring_type: "{{keyring}}"
+  {%- if keyring_data.get('filename') %}
+    - unless: "ceph auth get {{keyring_data.name}}"
+  {%- endif %}
 {%- endif %}
 {%- endif %}
 {%- endfor %}

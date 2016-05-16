@@ -30,14 +30,15 @@ ceph_osd_create__prepare_{{osd}}:
     - require:
       - cmd: ceph_osd_create__create_{{osd}}
 {%- endif %}
+    - unless: "test -d /var/lib/ceph/osd/{{ceph.cluster_name}}-{{osd}} -o -L /var/lib/ceph/osd/{{ceph.cluster_name}}-{{osd}}"
 
 ceph_osd_create__activate_{{osd}}:
-  module.run:
+  module.wait:
     - name: ceph.osd_activate
     - kwargs: 
         cluster_name: '{{ceph.cluster_name}}'
         osd_dev: '{{osd_data.osd_dev}}'
-    - require:
+    - watch:
       - module: ceph_osd_create__prepare_{{osd}}
 {%- endif %}
 {%- endfor %}

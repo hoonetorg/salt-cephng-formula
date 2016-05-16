@@ -15,5 +15,21 @@ ceph_rgw_create__create:
     - kwargs:
         cluster_name: "{{ceph.cluster_name}}"
         name: "rgw.{{ ceph.get('clusters').get(ceph.cluster_name).get('cephhostname') }}"
+    - unless: test -f /var/lib/ceph/radosgw/{{ceph.cluster_name}}-rgw.{{ceph.get('clusters').get(ceph.cluster_name).get('cephhostname')}}/done
     #- require:
     #  - module: ceph_rgw_create__pools_create
+
+ceph_rgw_create__done:
+  module.wait:
+    - name: cmd.run
+    - cmd: touch /var/lib/ceph/radosgw/{{ceph.cluster_name}}-rgw.{{ceph.get('clusters').get(ceph.cluster_name).get('cephhostname')}}/done
+    - python_shell: True
+    - watch:
+      - module: ceph_rgw_create__create
+
+ceph_rgw_create__init:
+  file.managed:
+    - name: /var/lib/ceph/radosgw/{{ceph.cluster_name}}-rgw.{{ceph.get('clusters').get(ceph.cluster_name).get('cephhostname')}}/{{grains['init']}}
+    - require:
+      - module: ceph_rgw_create__create
+

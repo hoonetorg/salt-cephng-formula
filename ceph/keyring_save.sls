@@ -21,5 +21,8 @@ ceph_keyring_save__keyring_{{keyring}}:
         cluster_name: "{{ceph.cluster_name}}"
         keyring_type: "{{keyring}}"
         secret: "{{keyring_data.key}}"
+  {%- if keyring_data.get('filename') %}
+    - unless: "test -f {{keyring_data.filename}}"
+  {%- endif %}
 {%- endif %}
 {%- endfor %}

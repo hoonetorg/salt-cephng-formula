@@ -20,4 +20,5 @@ ceph_pool_create__create_{{pool}}:
         {%- if pool_data.get('crush_ruleset') %}
         crush_ruleset: '{{pool_data.crush_ruleset}}'
         {%- endif %}
+    - unless: ceph --cluster {{ceph.cluster_name}} osd lspools|grep -w {{pool}}
 {%- endfor %}
