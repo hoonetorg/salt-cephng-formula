@@ -8,3 +8,7 @@ ceph:
     name: ceph.target
     state: running
     enable: True
+  monservice:
+    name_prefix: "ceph-mon@"
+    state: running
+    enable: True
