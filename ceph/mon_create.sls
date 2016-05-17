@@ -10,16 +10,28 @@ ceph_mon_create__create:
     - unless: test -f /var/lib/ceph/mon/{{ceph.cluster_name}}-{{ceph.get('clusters').get(ceph.cluster_name).get('cephhostname')}}/done
 
 ceph_mon_create__done:
-  module.wait:
-    - name: cmd.run
-    - cmd: touch /var/lib/ceph/mon/{{ceph.cluster_name}}-{{ceph.get('clusters').get(ceph.cluster_name).get('cephhostname')}}/done
-    - python_shell: True
-    - watch:
+## ceph.mon_create creates a done file
+#  module.wait:
+#    - name: file.touch
+#    - m_name: /var/lib/ceph/mon/{{ceph.cluster_name}}-{{ceph.get('clusters').get(ceph.cluster_name).get('cephhostname')}}/done
+#    - watch:
+#      - module: ceph_mon_create__create
+## ceph_cfg creates done file with wronge user/group (at least until version 0.1.2)
+  file.managed:
+    - name: /var/lib/ceph/mon/{{ceph.cluster_name}}-{{ceph.get('clusters').get(ceph.cluster_name).get('cephhostname')}}/done
+    - user: ceph
+    - group: ceph
+    - onlyif: test -f /var/lib/ceph/mon/{{ceph.cluster_name}}-{{ceph.get('clusters').get(ceph.cluster_name).get('cephhostname')}}/done
+    - require:
       - module: ceph_mon_create__create
 
+## ceph_cfg does not create init file (at least until version 0.1.2)
 ceph_mon_create__init:
   file.managed:
     - name: /var/lib/ceph/mon/{{ceph.cluster_name}}-{{ceph.get('clusters').get(ceph.cluster_name).get('cephhostname')}}/{{grains['init']}}
+    - user: ceph
+    - group: ceph
+    - onlyif: test -d /var/lib/ceph/mon/{{ceph.cluster_name}}-{{ceph.get('clusters').get(ceph.cluster_name).get('cephhostname')}}
     - require:
       - module: ceph_mon_create__create
 
