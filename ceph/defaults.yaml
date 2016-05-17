@@ -28,3 +28,11 @@ ceph:
     name: "ceph-mds.target"
     state: running
     enable: True
+  rgwservice:
+    name_prefix: "ceph-radosgw@rgw."
+    state: running
+    enable: True
+  rgwservicetarget:
+    name: "ceph-radosgw.target"
+    state: running
+    enable: True
