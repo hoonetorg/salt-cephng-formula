@@ -16,3 +16,7 @@ ceph:
     name: "ceph-mon.target"
     state: running
     enable: True
+  osdservicetarget:
+    name: "ceph-osd.target"
+    state: running
+    enable: True

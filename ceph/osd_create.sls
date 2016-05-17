@@ -46,6 +46,8 @@ ceph_osd_create__activate_{{osd}}:
     - python_shell: True
     - watch:
       - module: ceph_osd_create__prepare_{{osd}}
+    - watch_in: 
+      - service: ceph_osd_create__servicetarget
 
 ceph_osd_create__lukskeydir_{{osd}}:
   file.directory:
@@ -90,7 +92,17 @@ ceph_osd_create__activate_{{osd}}:
         osd_dev: '{{osd_data.osd_dev}}'
     - watch:
       - module: ceph_osd_create__prepare_{{osd}}
+    - watch_in: 
+      - service: ceph_osd_create__servicetarget
 {%- endif %}
 
 {%- endif %}
 {%- endfor %}
+
+ceph_osd_create__servicetarget:
+  service.{{ ceph.osdservicetarget.state }}:
+    - name: {{ ceph.osdservicetarget.name}}
+{% if ceph.osdservicetarget.state in [ 'running', 'dead' ] %}
+    - enable: {{ ceph.osdservicetarget.enable }}
+{% endif %}
+
