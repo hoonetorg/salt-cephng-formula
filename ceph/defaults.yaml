@@ -20,3 +20,11 @@ ceph:
     name: "ceph-osd.target"
     state: running
     enable: True
+  mdsservice:
+    name_prefix: "ceph-mds@"
+    state: running
+    enable: True
+  mdsservicetarget:
+    name: "ceph-mds.target"
+    state: running
+    enable: True
