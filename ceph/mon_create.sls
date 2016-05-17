@@ -43,3 +43,12 @@ ceph_mon_create__service:
 {% endif %}
     - require:
       - module: ceph_mon_create__create
+
+ceph_mon_create__servicetarget:
+  service.{{ ceph.monservicetarget.state }}:
+    - name: {{ ceph.monservicetarget.name}}
+{% if ceph.monservicetarget.state in [ 'running', 'dead' ] %}
+    - enable: {{ ceph.monservicetarget.enable }}
+{% endif %}
+    - require:
+      - module: ceph_mon_create__create

@@ -12,3 +12,7 @@ ceph:
     name_prefix: "ceph-mon@"
     state: running
     enable: True
+  monservicetarget:
+    name: "ceph-mon.target"
+    state: running
+    enable: True
