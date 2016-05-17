@@ -43,6 +43,7 @@ ceph_mon_create__service:
 {% endif %}
     - require:
       - module: ceph_mon_create__create
+      - file: ceph_mon_create__init
 
 ceph_mon_create__servicetarget:
   service.{{ ceph.monservicetarget.state }}:
@@ -52,3 +53,4 @@ ceph_mon_create__servicetarget:
 {% endif %}
     - require:
       - module: ceph_mon_create__create
+      - file: ceph_mon_create__init
